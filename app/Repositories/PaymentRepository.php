@@ -34,8 +34,8 @@ class PaymentRepository implements PaymentRepositoryInterface
         try {
             $transId = decrypt($id);
             $transaction = Transaction::with('payments')->find($transId);
-            $dueAmount = ($transaction->amount_calculated-$transaction->payments->sum('amount'));
-            if($dueAmount < $request->amount){
+            $dueAmount = ($transaction->amount_calculated)-($transaction->payments->sum('amount'));
+            if((string)$dueAmount < (string)$request->amount){
                 return (object)[
                     'message'=>'No enough due amount Pending yet.'
                 ];

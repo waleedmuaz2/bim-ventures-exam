@@ -36,7 +36,7 @@ class Transaction extends Model
         $currentDate = Carbon::now();
         $totalPaidAmount = $this->payments->sum('amount');
         $dueDate = Carbon::parse($this->due_on);
-        if ($totalPaidAmount >= $this->amount) {
+        if ($totalPaidAmount >= $this->amount_calculated) {
             return 'Paid';
         } elseif ($dueDate->lt($currentDate) && $totalPaidAmount > 0) {
             return 'Overdue';

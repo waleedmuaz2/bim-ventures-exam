@@ -18,13 +18,13 @@ class isAdminRule implements Rule
     public function passes($attribute, $value)
     {
         $user = User::find($value);
-        if(isNull($user)){
+        if(is_null($user)){
             return false;
         }
-        elseif (in_array('customer', $user->getRoleNames()->toArray())) {
-            return true;
+        if (in_array('admin', $user->getRoleNames()->toArray())) {
+            return false;
         }
-        return false;
+        return true;
     }
 
     /**

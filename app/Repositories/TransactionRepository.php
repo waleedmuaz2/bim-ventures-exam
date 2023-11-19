@@ -50,8 +50,8 @@ class TransactionRepository implements TransactionRepositoryInterface
                 $data[] = [
                     'id' => encrypt($tran->id),
                     'sr_no' => $i++,
-                    'amount' => (double)$tran->amount_calculated,
-                    'due_amount' => (double)$tran->due_amount,
+                    'amount' => round((double)$tran->amount_calculated,2),
+                    'due_amount' => round((double)$tran->due_amount,3),
                     'payer' => $tran->user->email,
                     'due_on' => $tran->due_on,
                     'vat' => $tran->vat,
