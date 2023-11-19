@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
                         <div class="text-center">
@@ -18,29 +18,22 @@
                     </div>
                     <div class="card-body">
                         @role('admin')
-                        <div class="data-range">
-                            <form class="form" method="post" action="{{route('report..submit')}}" >
-                                @csrf
-                                <div class="row">
-                                    <div class="col">
-                                            <input type="text" name="starting_date" class="form-control date" placeholder="Start Date">
-                                    </div>
-                                    <div class="col">
-                                            <input type="text" name="ending_date" class="form-control date" placeholder="End Date">
-                                    </div>
-                                    <div class="mt-1">
-                                        <button type="submit" class="btn btn-success">Submit</button>
-                                    </div>
+                        <form class="form" method="post" action="{{route('report..submit')}}">
+                            @csrf
+                            <div class="row">
+                                <div class="col-5">
+                                    <input type="text" name="start_date" class="form-control" id="startDate" placeholder="Start Date">
                                 </div>
-                            </form>
-                        </div>
-                        @endrole
-                        @if (session('status'))
-                            <div class="alert alert-success" role="alert">
-                                {{ session('status') }}
+                                <div class="col-5">
+                                    <input type="text" name="end_date" class="form-control" id="endDate" placeholder="End Date">
+                                </div>
+                                <div class="col-2">
+                                    <button type="submit" class="btn btn-success">Submit</button>
+                                </div>
                             </div>
-                        @endif
-                        <div>
+                        </form>
+                        @endrole
+                        <div class="row">
                             <table class="table" id="transaction">
                                 <thead>
                                 <tr>
@@ -52,7 +45,9 @@
                                     <th scope="col">Vat %</th>
                                     <th scope="col">Is Vat Inclusive</th>
                                     <th scope="col">Status</th>
+                                    @role('admin')
                                     <th scope="col">Action</th>
+                                    @endrole
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -64,8 +59,9 @@
                                         <td>{{$transaction['due_amount']}}</td>
                                         <td>{{$transaction['due_on']}}</td>
                                         <td>{{$transaction['vat']}}</td>
-                                        <td>{{($transaction['is_vat_inclusive']==1)?"Yes":"No"}}</td>
+                                        <td>{{($transaction['is_vat_inclusive'])}}</td>
                                         <td>{{$transaction['status']}}</td>
+                                        @role('admin')
                                         <td>
                                             <div>
                                                 <a class="btn btn-success"
@@ -73,10 +69,12 @@
                                                     Payment</a>
                                             </div>
                                         </td>
+                                        @endrole
+
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="8" class="text-center">Not Record Found</td>
+                                        <td colspan="9" class="text-center">Not Record Found</td>
                                     </tr>
                                 @endforelse
                                 </tbody>
@@ -90,19 +88,19 @@
 @endsection
 @section('scripts')
     <script>
-        $("input[type='text']").datepicker({
-            autoclose: true,
-            todayHighlight: true,
-            toggleActive: true,
-            format: 'dd/mm/yyyy',
-        }).on('changeDate', function(selected){
-            updateDate($(this).closest('form').find('input:text'), selected);
+        $(function() {
+            $("#startDate").datepicker({
+                dateFormat: 'yy-mm-dd',
+                onClose: function(selectedDate) {
+                    $("#endDate").datepicker("option", "minDate", selectedDate);
+                }
+            });
+            $("#endDate").datepicker({
+                dateFormat: 'yy-mm-dd',
+                onClose: function(selectedDate) {
+                    $("#startDate").datepicker("option", "maxDate", selectedDate);
+                }
+            });
         });
-        function updateDate(inputs, selected){
-            console.log($(inputs[0]).val());
-            var minDate = new Date(selected.date.valueOf());
-            $(inputs[1]).datepicker('setStartDate', minDate);
-            $(inputs[0]).datepicker('setEndDate', minDate);
-        }
     </script>
 @endsection

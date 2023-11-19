@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JWTAuth\AuthController;
 use App\Http\Controllers\API\V1\PaymentController;
 use App\Http\Controllers\API\V1\TransactionController;
+use App\Http\Controllers\API\V1\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,8 +32,12 @@ Route::group(['prefix' => 'auth'], function () {
 
 Route::group(['prefix'=>'payment','middleware' => ['auth.token','check.admin']], function () {
     Route::post('/store/{id}', [PaymentController::class,'store'])->name('payment..store');
+    Route::post('/list/{id}', [PaymentController::class,'create'])->name('payment..create');
 });
 Route::group(['prefix'=>'transaction','middleware' => ['auth.token','check.admin']], function () {
     Route::get('/users',[TransactionController::class,'create']);
     Route::post('/store', [TransactionController::class,'store'])->name('transaction..store');
+});
+Route::group(['prefix'=>'report','middleware' => ['auth.token','check.admin']], function () {
+    Route::post('/', [ReportController::class,'generateMonthlyReport'])->name('report..get');
 });

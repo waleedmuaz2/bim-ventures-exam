@@ -17,8 +17,8 @@ class UserSeeder extends Seeder
         //Admin
         $userAdmin = User::create([
             'name'=>'admin',
-            'email'=>'admin@bim-vendture.com',
-            'password'=>Hash::make('admin@bim-vendture.com'),
+            'email'=>'admin@bim-venture.com',
+            'password'=>Hash::make('admin@bim-venture.com'),
         ]);
         $userAdmin->assignRole('admin');
         $userAdmin->givePermissionTo('view_transaction');

@@ -170,6 +170,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
+        Brian2694\Toastr\ToastrServiceProvider::class,
     ])->toArray(),
 
     /*

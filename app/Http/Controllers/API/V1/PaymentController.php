@@ -21,7 +21,12 @@ class PaymentController extends Controller
     public function create($id)
     {
         $transactionId = $this->paymentRepository->decryptTransactionId($id);
-        return jsonFormat($transactionId,"success",200);
+        $paymentLists = $this->paymentRepository->paymentList($id);
+        $data=[
+          'transId'=>$transactionId,
+          'paymentList'=>$paymentLists,
+        ];
+        return jsonFormat($data,"success",200);
     }
 
     /**
@@ -32,5 +37,6 @@ class PaymentController extends Controller
         $message = $this->paymentRepository->store($request,$id);
         return jsonFormat($message,$message->message,200);
     }
+
 
 }

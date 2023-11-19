@@ -27,7 +27,7 @@ class PaymentStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'amount'=>'required|decimal:2',
+            'amount'=>'required|decimal:2|min:0.01',
             'paid_on'=>'required|date'
         ];
     }

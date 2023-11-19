@@ -22,7 +22,8 @@ class PaymentController extends Controller
     public function create($id)
     {
         $transactionId = $this->paymentRepository->decryptTransactionId($id);
-        return view('payments.create',compact('transactionId'));
+        $paymentLists = $this->paymentRepository->paymentList($id);
+        return view('payments.create',compact('transactionId','paymentLists'));
     }
 
     /**
@@ -31,7 +32,10 @@ class PaymentController extends Controller
     public function store(PaymentStoreRequest $request,$id)
     {
         $message = $this->paymentRepository->store($request,$id);
-        return redirect()->back()->withErrors($message);
+        if($message->message != "success"){
+            return redirect()->back()->with('error',"No enough due amount Pending yet.");
+        }
+        return redirect()->back()->with('success','Data added Successfully');
     }
 
 }

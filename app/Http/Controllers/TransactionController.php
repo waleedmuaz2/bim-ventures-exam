@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\TransactionStoreRequest;
 use App\Interfaces\TransactionRepositoryInterface;
 use App\Interfaces\UserRepositoryInterface;
+use Brian2694\Toastr\Facades\Toastr;
 
 class TransactionController extends Controller
 {
@@ -32,7 +33,7 @@ class TransactionController extends Controller
     public function store(TransactionStoreRequest $request)
     {
         $this->transactionRepository->store($request);
-        return redirect()->to(route('transaction..create'));
+        return redirect()->to(route('transaction..create'))->with('success','Data added Successfully');
     }
 
     /**

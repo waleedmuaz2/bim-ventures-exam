@@ -1,9 +1,11 @@
 <?php
+namespace App\Http\Controllers\API\V1;
 
-namespace App\Http\Controllers;
-
+use App\Http\Controllers\Controller;
 use App\Http\Requests\ReportGenerateRequest;
+use App\Interfaces\PaymentRepositoryInterface;
 use App\Interfaces\ReportRepositoryInterface;
+use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
@@ -16,11 +18,15 @@ class ReportController extends Controller
     /**
      * Ger Report.
      *
-     * @param ReportGenerateRequest $request
+     * @param Request $request
      * @return object
      */
-    public function generateMonthlyReport(ReportGenerateRequest $request):object
+    public function generateMonthlyReport(ReportGenerateRequest $request)
     {
-        return $this->reportRepository->reportByDate($request);
+        $result = $this->reportRepository->reportByDate($request);
+        return jsonFormat($result,"successfully",200);
+
     }
+
+
 }

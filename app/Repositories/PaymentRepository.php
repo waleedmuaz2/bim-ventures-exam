@@ -37,7 +37,7 @@ class PaymentRepository implements PaymentRepositoryInterface
             $dueAmount = ($transaction->amount_calculated-$transaction->payments->sum('amount'));
             if($dueAmount < $request->amount){
                 return (object)[
-                    'message'=>'No due amount Pending yet.'
+                    'message'=>'No enough due amount Pending yet.'
                 ];
             }
              Payment::create([
@@ -67,6 +67,16 @@ class PaymentRepository implements PaymentRepositoryInterface
         }catch (\Exception $e){
             abort(500);
         }
+    }
+
+    /**
+     * List Payment By Id.
+     * @param $id
+     * @return object
+     */
+    public function paymentList($id):object{
+        $id = decrypt($id);
+        return Payment::where('transaction_id',$id)->get();
     }
 
 }

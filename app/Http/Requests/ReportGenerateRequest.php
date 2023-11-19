@@ -2,17 +2,14 @@
 
 namespace App\Http\Requests;
 
-use App\Models\User;
-use App\Rules\isAdminRule;
 use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
-use \Illuminate\Contracts\Validation\Validator;
-use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
-class TransactionStoreRequest extends FormRequest
+class ReportGenerateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,23 +22,15 @@ class TransactionStoreRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, ValidationRule|array<mixed>|string>
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
-            'amount'=>'required|decimal:2|min:0.01',
-            'payer' => [
-                'required',
-                'exists:users,id',
-                new isAdminRule
-            ],
-            'due_on' => 'required|date',
-            'vat' => 'required|min:1|max:99.99',
-            'is_vat_inclusive' => 'required|in:yes,no',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
         ];
     }
-
     /**
      * Get the validation that apply to the request APIs.
      *
@@ -52,7 +41,7 @@ class TransactionStoreRequest extends FormRequest
     {
         $isJsonRequest = request()->is('api/*');
         if ($isJsonRequest) {
-            throw new HttpResponseException(jsonFormat($validator->errors(),'errors',JsonResponse::HTTP_UNPROCESSABLE_ENTITY));
+            throw new HttpResponseException(jsonFormat($validator->errors(), 'errors', JsonResponse::HTTP_UNPROCESSABLE_ENTITY));
         } else {
             parent::failedValidation($validator);
         }
