@@ -5,8 +5,8 @@ BIM Venture is a Assessment Test.
 ## Table of Contents
 
 - [Installation](#installation)
-- [Intro](#Intro)
-- [API Docs](#API Documentation)
+- [Introduction](#Introduction)
+- [API Documentation](#APIDocumentation)
 
 ## Installation
 
@@ -39,7 +39,17 @@ BIM Venture is a Assessment Test.
    ```bash
    php artisan migrate:refresh --seed
 
-## Usage
+8. Run NPM command for Vite Design Load
+   ```bash
+   npm install
+   npm run dev
+
+9. Run Command Script Start
+
+   ```bash
+   php artisan serve
+
+## Introduction
 BIM Venture Exercise - Its Senior Software Engineer Assessment Test
 
 
